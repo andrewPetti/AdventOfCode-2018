@@ -215,3 +215,5 @@ FakesAssemblies/
 **/*.Server/GeneratedArtifacts
 **/*.Server/ModelManifest.xml
 _Pvt_Extensions
+
+Dec 3/Dec 3\.sln\.cache
