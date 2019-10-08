@@ -7,7 +7,6 @@ namespace inputs
 	{
 		std::string data;
 		data.append( "wWuUJjXxqQrqQmKBzZbZzLlkWNqQntxXBZzMmbTwLlHhMQqiIFfmMtSsTXxqaAQRtBDVvKgGkYyLluOoEelLUdAaDXxkKAaSQDdVvXxDdqoOsYyzhFwWfHuNnUZSsMGNngmjJOJjorRGgMmiIHhtTGgxXxdjJDicCIWxXwHhYZzyXHhlLiIyYEqQaLlnsSRrQ" );
-
 		data.append( "zVvZqNARrYyWLuUGglwOxXTtmMwjJvGgVWoyYSsYylLONnvVHhoEPpeJFdDfVvjeRDdqQXxI" );
 		data.append( "iQqOoNtTnrhHRQyYJjCcnNqxXuHhUrQHnPpdbBDEeDHOohdNQqEehpaAPSsAaUudcCDLWNnjJwSVvkKslUuAaqYWwyRrXxLlIisSFqQaAffojJHhOFEQqSsWDd" );
 		data.append( "wdDJjCcqZzvjJzZEeVwWtGRrgAaTXxcCQqRrxaAXXxLnNsSlLkQqKktYyMmTQqKybRrBYwWl" );
