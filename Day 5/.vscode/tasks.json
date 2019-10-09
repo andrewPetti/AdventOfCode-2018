@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Build with Clang",
+      "label": "Clang Build",
       "type": "shell",
       "command": "clang++",
       "args": [
@@ -17,6 +17,20 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "label": "msvc build",
+      "type": "shell",
+      "command": "cl.exe",
+      "args": ["/EHsc", "/Zi", "/Fe:", "Day5.exe", "Day 5.cpp"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always"
+      },
+      "problemMatcher": "$msCompile"
     }
   ]
 }
