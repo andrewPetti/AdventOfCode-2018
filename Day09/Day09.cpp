@@ -4,7 +4,28 @@
 #include "inputs.h"
 #include <list>
 
-int ProcessGame(const inputs::GameInfo& info)
+
+template<typename Iter>
+void circular_inc(Iter first, Iter last, int inc, Iter& it)
+{
+    while (inc--) {
+        if (it == last)
+            it = first;
+        ++it;
+    }
+}
+
+template<typename Iter>
+void circular_dec(Iter first, Iter last, int dec, Iter& it)
+{
+    while (dec++) {
+        if (it == first)
+            it = last;
+        --it;
+    }
+}
+
+uint64_t ProcessGame(const inputs::GameInfo& info)
 {
     std::list<int> gameCircle { 0, 2, 1};
     std::vector<uint64_t> players;
@@ -19,37 +40,14 @@ int ProcessGame(const inputs::GameInfo& info)
     {
         if ( marbleNumber % 23 != 0)
         {
-            //currentPos++;
-            if ( std::next(currentPos,1) != gameCircle.end() )
-                {
-                    //currentPos +=2;
-                
-                    currentPos = gameCircle.insert(std::next(currentPos,2), marbleNumber);
-                }
-            else 
-            {
-                currentPos = gameCircle.begin();
-                currentPos = gameCircle.insert(std::next(currentPos,1), marbleNumber);
-            }
+            circular_inc(std::begin(gameCircle), std::end(gameCircle), 2, currentPos);
+            currentPos = gameCircle.insert(currentPos, marbleNumber);
         }
         else
         {   
-            auto dist = std::distance(gameCircle.begin(), currentPos);
-            currentPos = gameCircle.begin();
-            if ( dist > 7)
-                std::advance(currentPos, dist-7);
-            else
-            {
-                std::advance(currentPos, gameCircle.size() - (7-dist));
-            }
-            score = (*currentPos) + marbleNumber;
-            //std::cout << "Last Marble: " << score << std::endl;
-            players[currentPlayer-1] += score;
-            //if (players[currentPlayer-1] > info.highestScore)
-            //    {
-            //        std::cout << "Error Highest score is too high at: " << players[currentPlayer-1] <<" and last marble was calucalted to be: "<< score <<std::endl;
-            //        break;
-            //    }
+            circular_dec(std::begin(gameCircle), std::end(gameCircle), -7, currentPos);
+            
+            players[currentPlayer-1] += marbleNumber + *currentPos;
             currentPos = gameCircle.erase(currentPos);
         }
         
@@ -60,13 +58,40 @@ int ProcessGame(const inputs::GameInfo& info)
             currentPlayer++;
 
         if (marbleNumber % 500000 == 0)
-            std::cout << "Just finished marble: " << marbleNumber << std::endl;
+            std::cout << "Just finished marble another 500,000"<< std::endl;
         //increment marbel
         marbleNumber ++;
 
     }
 
     return *std::max_element(players.begin(), players.end());
+}
+
+uint64_t play_marbles(int num_players, int marbles)
+{
+    int marble = 0;
+    std::list<int> circle {marble};
+    std::vector<uint64_t> scores (num_players, 0);
+    size_t player_i = 0;
+
+    auto it = std::begin(circle);
+    while (marble < marbles) {
+        ++marble;
+
+        if (marble % 23 == 0) {
+            circular_dec(std::begin(circle), std::end(circle), -7, it);
+            scores[player_i] += marble + *it;
+            it = circle.erase(it);
+        } else {
+            circular_inc(std::begin(circle), std::end(circle), 2, it);
+            it = circle.insert(it, marble);
+        }
+
+        ++player_i;
+        player_i %= num_players;
+    }
+
+    return *std::max_element(std::begin(scores), std::end(scores));
 }
 int main()
 {
@@ -86,9 +111,12 @@ int main()
     for (auto info:data)
     {
         info.lastMarble *= 100;
-        highScore = ProcessGame(info);
-        std::cout << "For game with " << info.numPlayers << " and where the last marble is worth " << info.lastMarble << " the high score is: " << highScore <<std::endl;
+        auto score = ProcessGame(info);
+        std::cout << "For game with " << info.numPlayers << " and where the last marble is worth " << info.lastMarble << " the high score is: " << score <<std::endl;
     }
+
+    // auto answer = play_marbles(data[0].numPlayers, data[0].lastMarble*100);
+    // sdd::cout << "From GitHub the answer to part 2 is : " <<answer;
     std::cout<<"Please enter a number to exit: ";
     int blah;
     std::cin >> blah; 
