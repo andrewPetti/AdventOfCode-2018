@@ -35,16 +35,16 @@ int SumSquare(const std::vector<std::vector<int>>& grid, int left, int top, int 
 {
     auto sum = 0;
     for (auto y = top; y< top+sqSize;y++)
-        sum += grid[y][left] + grid[y][left+1] +grid[y][left+2];
+        for( auto x = left; x<left+sqSize;x++)
+        sum += grid[y][x];
 
     return sum;
 }
-std::pair<int,int> FindLargestOutputSquare(const std::vector<std::vector<int>>& grid)
+std::pair<int,int> FindLargestOutputSquare(const std::vector<std::vector<int>>& grid, const int& sqSize, int& maxPower)
 {
-    auto sqSize = 3;
     auto buffer = sqSize-1;
 
-    auto maxSum = 0;
+    //auto maxSum = 0;
     auto coord = std::make_pair(0,0);
     auto sum = 0;
     //auto height = grid.s
@@ -55,9 +55,9 @@ std::pair<int,int> FindLargestOutputSquare(const std::vector<std::vector<int>>& 
         {
             sum =SumSquare(grid, x,y, sqSize);
 
-            if ( sum > maxSum)
+            if ( sum > maxPower)
             {
-                maxSum = sum;
+                maxPower = sum;
                 coord.first = x;
                 coord.second = y;
             }
@@ -76,16 +76,27 @@ int main()
     //gridSerialNumber = 18;
     auto grid = BuildPowerGrid(gridSerialNumber);
     std:: cout << "Part 1: what is x,y coordinate for top let of the 3x3 square with laregest total power?" << std::endl;
-
-      auto coord = FindLargestOutputSquare(grid);
+    auto maxPower = 0;
+    auto coord = FindLargestOutputSquare(grid, 3, maxPower);
 
     //auto coord = std::make_pair(0,0);
     std::cout << "The x, y coordinates are : " << coord.first <<","<<coord.second<<std::endl;
     std::cout << "Part 2: TBD" <<std::endl;
-    for (auto i = 1; i<=300; i++)
+    maxPower = -1;
+    std::pair<int,int> maxCoord;
+    auto maxSize = -1;
+    for (auto i = 0; i<=300; i++)
     {
-        FindLargestOutput(grid,i);
+        auto power =0;
+        coord = FindLargestOutputSquare(grid,i, power);
+        if ( power > maxPower)
+        {   
+            maxCoord = coord;
+            maxSize = i;
+            maxPower = power;
+        }
     }
+    std::cout << "The largest power total is found x,y,size: " << maxCoord.first <<","<<maxCoord.second<<","<<maxSize<<std::endl;
     auto blah = 0;
     std::cout << "please enter a number to exit: ";
     std::cin >> blah;
