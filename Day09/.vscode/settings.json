@@ -2,6 +2,7 @@
     "files.associations": {
         "set": "cpp",
         "vector": "cpp",
-        "xstring": "cpp"
+        "xstring": "cpp",
+        "xutility": "cpp"
     }
 }

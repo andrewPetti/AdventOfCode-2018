@@ -2,11 +2,12 @@
 #include <cctype>
 #include <iostream>
 #include "inputs.h"
+#include <list>
 
 int ProcessGame(const inputs::GameInfo& info)
 {
-    std::vector<int> gameCircle { 0, 2, 1};
-    std::vector<int> players;
+    std::list<int> gameCircle { 0, 2, 1};
+    std::vector<uint64_t> players;
     players.assign(info.numPlayers,0);
 
     auto marbleNumber = 3;
@@ -19,26 +20,27 @@ int ProcessGame(const inputs::GameInfo& info)
         if ( marbleNumber % 23 != 0)
         {
             //currentPos++;
-            if ( currentPos+1 != gameCircle.end() )
+            if ( std::next(currentPos,1) != gameCircle.end() )
                 {
                     //currentPos +=2;
                 
-                    currentPos = gameCircle.insert(currentPos+2, marbleNumber);
+                    currentPos = gameCircle.insert(std::next(currentPos,2), marbleNumber);
                 }
             else 
             {
                 currentPos = gameCircle.begin();
-                currentPos = gameCircle.insert(currentPos+1, marbleNumber);
+                currentPos = gameCircle.insert(std::next(currentPos,1), marbleNumber);
             }
         }
         else
         {   
             auto dist = std::distance(gameCircle.begin(), currentPos);
+            currentPos = gameCircle.begin();
             if ( dist > 7)
-                currentPos = gameCircle.begin() += dist-7;
+                std::advance(currentPos, dist-7);
             else
             {
-                currentPos = gameCircle.begin() += gameCircle.size() - (7-dist);
+                std::advance(currentPos, gameCircle.size() - (7-dist));
             }
             score = (*currentPos) + marbleNumber;
             //std::cout << "Last Marble: " << score << std::endl;
@@ -57,8 +59,11 @@ int ProcessGame(const inputs::GameInfo& info)
         else
             currentPlayer++;
 
+        if (marbleNumber % 500000 == 0)
+            std::cout << "Just finished marble: " << marbleNumber << std::endl;
         //increment marbel
         marbleNumber ++;
+
     }
 
     return *std::max_element(players.begin(), players.end());
