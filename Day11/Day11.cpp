@@ -16,14 +16,14 @@ int CalcPowerLevelForCell(const int& x, const int& y, const int& serialNumber)
 }
 std::vector<std::vector<int>> BuildPowerGrid(const int& serialNumber)
 {
-    auto xSize = 300;
-    auto ySize = 300;
+    auto xSize = 301;
+    auto ySize = 301;
 
-    auto grid = std::vector<std::vector<int>>(300);
+    auto grid = std::vector<std::vector<int>>(301);
     //grid.reserve(300);
-    for(auto y =0; y<300; y++)
+    for(auto y =0; y<=300; y++)
     {
-        for (auto x = 0; x< 300; x++)
+        for (auto x = 0; x<=300; x++)
             {
                 grid[y].push_back(CalcPowerLevelForCell(x, y, serialNumber));
             }
@@ -36,7 +36,7 @@ int SumSquare(const std::vector<std::vector<int>>& grid, int left, int top, int 
     auto sum = 0;
     for (auto y = top; y< top+sqSize;y++)
         for( auto x = left; x<left+sqSize;x++)
-        sum += grid[y][x];
+            sum += grid[y][x];
 
     return sum;
 }
@@ -48,10 +48,10 @@ std::pair<int,int> FindLargestOutputSquare(const std::vector<std::vector<int>>& 
     auto coord = std::make_pair(0,0);
     auto sum = 0;
     //auto height = grid.s
-    for(auto y =0; y<grid.size()-buffer; y++)
+    for(auto y =1; y<grid.size()-buffer; y++)
     {
         auto length = grid[y].size();
-        for (auto x =0; x< length-buffer; x++)
+        for (auto x =1; x< length-buffer; x++)
         {
             sum =SumSquare(grid, x,y, sqSize);
 
@@ -71,7 +71,7 @@ int main()
 {
     std::cout << "Day 11 - chronal Charge ----" << std::endl;
 
-    std::cout <<"Test 122,79, 57: " << CalcPowerLevelForCell(122,79,57);
+    std::cout <<"Test 122,79, 57: " << CalcPowerLevelForCell(122,79,57) <<std::endl;
     auto gridSerialNumber = 5535;
     //gridSerialNumber = 18;
     auto grid = BuildPowerGrid(gridSerialNumber);
