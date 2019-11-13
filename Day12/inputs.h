@@ -3,10 +3,9 @@
 
 namespace inputs
 {
-    std::vector<char> GetInitialState()
+    std::vector<char> GetStateAsVector(std::string& state)
     {
-        std::string state = "#.####...##..#....#####.##.......##.#..###.#####.###.##.###.###.#...#...##.#.##.#...#..#.##..##.#.##";
-        std::vector<char> initialState(state.size());
+         std::vector<char> initialState(state.size());
 
         for (auto i = 0; i < state.size(); i++)
         {
@@ -14,6 +13,19 @@ namespace inputs
             initialState.push_back(a);
         }
         return initialState;
+    }
+    
+    std::vector<char> GetInitialState()
+    {
+        std::string state = "#.####...##..#....#####.##.......##.#..###.#####.###.##.###.###.#...#...##.#.##.#...#..#.##..##.#.##";
+       
+        return GetStateAsVector(state);
+    }
+
+    std::vector<char> GetInitalTestState()
+    {
+        std::string state = "#..#.#..##......###...###";
+        return GetStateAsVector(state);
     }
 
     std::map<std::string, char> GetInstructions()
