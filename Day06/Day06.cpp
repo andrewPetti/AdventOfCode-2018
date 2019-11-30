@@ -5,6 +5,7 @@
 #include <set>
 #include <cctype>
 #include <utility>
+#include <algorithm>
 
 int CalcManhattenDistance( const std::pair<int,int>& pt1, const std::pair<int,int>& pt2)
 {
